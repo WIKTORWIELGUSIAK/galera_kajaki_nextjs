@@ -1,10 +1,13 @@
 /** @format */
 
+import { Road } from "./Road";
+
 type InitialViewState = {
   lat: number;
   lng: number;
   zoom: number;
 };
+
 type MapStyle =
   | `mapbox://styles/mapbox/streets-v12`
   | `mapbox://styles/mapbox/outdoors-v12`
@@ -19,5 +22,5 @@ export type MapProps = {
   width: string;
   height: string;
   mapStyle: MapStyle;
-  children?: any;
+  data: Road[];
 };
