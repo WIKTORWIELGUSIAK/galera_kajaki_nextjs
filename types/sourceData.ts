@@ -1,15 +1,15 @@
 /** @format */
 
-import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
+import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
-export interface SourceData {
+export type SourceData = {
   sourceProperties: {
     data: FeatureCollection<Geometry, GeoJsonProperties>;
     id: string;
-    type: string;
+    type: "geojson";
   };
   layerProperties: {
-    type: string;
+    type: "line";
     source: string;
     paint: {
       "line-color": string;
@@ -17,4 +17,4 @@ export interface SourceData {
       "line-opacity": number;
     };
   };
-}
+};

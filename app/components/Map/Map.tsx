@@ -2,18 +2,26 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Layer,
-  Map as MapGL,
-  Marker,
+import { Layer, Map as MapGL, Marker, Source } from "react-map-gl";
+import type { MapProps } from "@/types/Map";
+import createSourcesData from "@/utils/createSourcesData";
+import "mapbox-gl/dist/mapbox-gl.css";
+import type { Feature, GeoJsonProperties, LineString } from "geojson";
+import type {
+  LayerProps,
   MarkerDragEvent,
   MarkerProps,
-  Source,
+  SourceProps,
 } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { MapProps } from "@/types/Map";
-import createSourcesData from "@/utils/createSourcesData";
-const Map = ({ initialViewState, width, height, mapStyle, data }: MapProps) => {
+
+const Map = ({
+  initialViewState,
+  width,
+  height,
+  mapStyle,
+  data,
+  wisła,
+}: MapProps) => {
   const { lat, lng, zoom } = initialViewState;
   const [markers, setMarkers] = useState<MarkerProps[]>([]);
   const roadsData = createSourcesData(data);
@@ -26,6 +34,27 @@ const Map = ({ initialViewState, width, height, mapStyle, data }: MapProps) => {
     );
     setMarkers(updatedMarkers);
   };
+  const properties = {
+    title: "Road",
+    "marker-symbol": "monument",
+  };
+  function CombineMultipleRiversIntoOne(coordinates: [][]) {
+    const features: Feature<LineString, GeoJsonProperties>[] = [];
+    coordinates.map((coordinatesArray: [][]) => {
+      const feature = {
+        type: "Feature",
+        geometry: {
+          type: "LineString",
+          coordinates: coordinatesArray,
+        },
+        properties: properties,
+      };
+      features.push(feature as Feature<LineString, GeoJsonProperties>);
+    });
+    return features;
+  }
+  const simpleWisła = CombineMultipleRiversIntoOne(wisła.coordinates);
+  console.log(simpleWisła);
   const handleClick = (e: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
     if (markers.length < 2) {
       const marker = {
@@ -36,9 +65,61 @@ const Map = ({ initialViewState, width, height, mapStyle, data }: MapProps) => {
       setMarkers([...markers, marker]);
     }
   };
+  const newRoadSourceProperties: SourceProps = {
+    data: {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates:
+              markers.length > 1
+                ? [
+                    [markers[0].longitude, markers[0].latitude],
+                    [markers[1].longitude, markers[1].latitude],
+                  ]
+                : [],
+          },
+          properties: {
+            title: "Road",
+          },
+        },
+      ],
+    },
+    id: `newRoad`,
+    type: "geojson",
+  };
 
+  const selectedRivers: SourceProps = {
+    data: {
+      type: "FeatureCollection",
+      features: simpleWisła,
+    },
+    id: `selectedRivers`,
+    type: "geojson",
+  };
+
+  const newRoadLayerProperties: LayerProps = {
+    type: "line",
+    source: `newRoad`,
+    paint: {
+      "line-color": `black`,
+      "line-width": 6,
+      "line-opacity": 1,
+    },
+  };
+  const selectedRiversLayer: LayerProps = {
+    type: "line",
+    source: `selectedRivers`,
+    paint: {
+      "line-color": `lightblue`,
+      "line-width": 6,
+      "line-opacity": 1,
+    },
+  };
   return (
-    <div className="w-full h-full">
+    <div className="h-full w-full">
       <MapGL
         onClick={handleClick}
         initialViewState={{
@@ -58,7 +139,13 @@ const Map = ({ initialViewState, width, height, mapStyle, data }: MapProps) => {
               onDragEnd={(e) => handleDragEnd(index, e)}
             />
           ))}
-        {roadsData.map((road: any) => (
+        <Source {...newRoadSourceProperties}>
+          <Layer {...newRoadLayerProperties} />
+        </Source>
+        <Source {...selectedRivers}>
+          <Layer {...selectedRiversLayer} />
+        </Source>
+        {roadsData.map((road) => (
           <Source key={road.sourceProperties.id} {...road.sourceProperties}>
             <Layer {...road.layerProperties} />
           </Source>

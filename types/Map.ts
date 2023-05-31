@@ -1,6 +1,6 @@
 /** @format */
 
-import { Road } from "./Road";
+import type { Road } from "./Road";
 
 type InitialViewState = {
   lat: number;
@@ -23,4 +23,5 @@ export type MapProps = {
   height: string;
   mapStyle: MapStyle;
   data: Road[];
+  wisła: any;
 };

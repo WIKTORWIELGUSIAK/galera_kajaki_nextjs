@@ -1,8 +1,7 @@
 /** @format */
 
-import { Road } from "@/types/Road";
-import { SourceData } from "@/types/sourceData";
-import { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
+import type { Road } from "@/types/Road";
+import type { SourceData } from "@/types/sourceData";
 
 /** @format */
 
