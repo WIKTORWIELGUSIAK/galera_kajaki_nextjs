@@ -1,7 +1,7 @@
 /** @format */
 
-import type { Road } from "@/types/Road";
-import type { SourceData } from "@/types/sourceData";
+import type { Road } from "@/RoadTypes";
+import type { SourceData } from "@/sourceDataTypes";
 
 /** @format */
 

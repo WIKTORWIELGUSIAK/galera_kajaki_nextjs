@@ -1,11 +1,13 @@
 /** @format */
 
 import { SERVER_URL } from "@/config";
-
-export const getRiver = async (): Promise<any> => {
-  console.log("test");
+export type River = {
+  name: string;
+  coordinates: Array<Array<Array<number>>>;
+};
+export const getRiver = async (river: string): Promise<River> => {
   try {
-    const response = await fetch(`${SERVER_URL}/search_river?name=Wisła`);
+    const response = await fetch(`${SERVER_URL}/search_river?name=${river}`);
 
     if (!response.ok) {
       if (response.status === 404) {

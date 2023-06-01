@@ -1,10 +1,9 @@
 /** @format */
 
+import type { Road } from "@/RoadTypes";
 import { SERVER_URL } from "@/config";
-import { Road } from "@/types/Road";
 
 export const getRoads = async (): Promise<Road[]> => {
-  console.log("test");
   try {
     const response = await fetch(`${SERVER_URL}/getRoads`);
 
