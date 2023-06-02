@@ -27,7 +27,7 @@ export type MapProps = {
   height: string;
   mapStyle: MapStyle;
   data: SourceData[];
-  selectedRivers: Feature<LineString, GeoJsonProperties>[];
+  features: Feature<LineString, GeoJsonProperties>[];
 };
 
 type MarkersState = {
@@ -38,13 +38,15 @@ type MarkersState = {
 export type MarkerHandleDragEnd = MarkersState & {
   markerIndex: number;
   lngLat: LngLat;
-  selectedRivers: Feature<LineString, GeoJsonProperties>[];
+  features: Feature<LineString, GeoJsonProperties>[];
 };
 
 export type LayerHandleClick = MarkersState & {
   lngLat: LngLat;
+  features: Feature<LineString, GeoJsonProperties>[];
 };
 
 export type OnLoad = MarkersState & {
   e: MapboxEvent<undefined>;
+  features: Feature<LineString, GeoJsonProperties>[];
 };

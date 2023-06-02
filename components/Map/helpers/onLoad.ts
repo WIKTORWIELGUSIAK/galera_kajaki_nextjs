@@ -3,7 +3,7 @@
 import type { OnLoad } from "@/MapTypes";
 import { layerHandleClick } from "./layerHandleClick";
 
-export const onLoad = ({ e, markers, setMarkers }: OnLoad): void => {
+export const onLoad = ({ e, markers, setMarkers, features }: OnLoad): void => {
   // todo: Create autosuggestion for id
   e.target.on("mouseenter", "selectedRivers", () => {
     e.target.getCanvas().style.cursor = "pointer";
@@ -12,6 +12,6 @@ export const onLoad = ({ e, markers, setMarkers }: OnLoad): void => {
     e.target.getCanvas().style.cursor = "default";
   });
   e.target.on("click", "selectedRivers", (e) =>
-    layerHandleClick({ lngLat: e.lngLat, markers, setMarkers })
+    layerHandleClick({ lngLat: e.lngLat, markers, setMarkers, features })
   );
 };

@@ -5,7 +5,7 @@ export type River = {
   name: string;
   coordinates: Array<Array<Array<number>>>;
 };
-export const getRiver = async (river: string): Promise<River> => {
+export const getRivers = async (river: string): Promise<River> => {
   try {
     const response = await fetch(`${SERVER_URL}/search_river?name=${river}`);
 

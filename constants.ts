@@ -1,7 +1,7 @@
 /** @format */
 
 import type { Feature } from "geojson";
-import type { LayerProps, MarkerProps, SourceProps } from "react-map-gl";
+import type { LayerProps, SourceProps } from "react-map-gl";
 
 const Layer: LayerProps = {
   type: "line",
@@ -34,48 +34,14 @@ export const newRoadLayer = {
   },
 };
 
-export const selectedRiversSourceProperties = (
-  features: Feature[]
+export const sourceProperties = (
+  features: Feature[],
+  id: string
 ): SourceProps => ({
   data: {
     type: "FeatureCollection",
-    features: features,
+    features,
   },
-  id: "selectedRivers",
-  type: "geojson",
-});
-export const testRiversSource = (features: Feature[]): SourceProps => ({
-  data: {
-    type: "FeatureCollection",
-    features: features,
-  },
-  type: "geojson",
-});
-
-export const newRoadSourceProperties = (
-  markers: MarkerProps[]
-): SourceProps => ({
-  data: {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        geometry: {
-          type: "LineString",
-          coordinates:
-            markers.length > 1
-              ? [
-                  [markers[0].longitude, markers[0].latitude],
-                  [markers[1].longitude, markers[1].latitude],
-                ]
-              : [],
-        },
-        properties: {
-          title: "Road",
-        },
-      },
-    ],
-  },
-  id: "newRoad",
+  id,
   type: "geojson",
 });

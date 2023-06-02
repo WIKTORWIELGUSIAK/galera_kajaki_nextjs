@@ -8,12 +8,12 @@ export const markerHandleDragEnd = ({
   lngLat,
   markers,
   setMarkers,
-  selectedRivers,
+  features,
 }: MarkerHandleDragEnd): void => {
   const updatedMarkers = markers.map((marker, index) => {
     if (index === markerIndex) {
       const closestCoords = findClosestCoords(
-        selectedRivers.flatMap((feature) => feature.geometry.coordinates),
+        features.flatMap((feature) => feature.geometry.coordinates),
         [lngLat.lng, lngLat.lat]
       );
       const [longitude, latitude] = closestCoords;

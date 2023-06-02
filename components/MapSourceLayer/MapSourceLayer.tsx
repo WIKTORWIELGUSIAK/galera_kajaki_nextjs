@@ -13,9 +13,3 @@ const MapSourceLayer = ({
   </Source>
 );
 export default MapSourceLayer;
-{
-  /* <MapSourceLayer
-          sourceProperties={selectedRiversSourceProperties(selectedRivers)}
-          layerProperties={selectedRiversLayer}
-        /> */
-}
