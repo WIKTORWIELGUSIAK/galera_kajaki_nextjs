@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="w-screen h-screen">{children}</main>
+        <main className="h-screen w-screen">{children}</main>
       </body>
     </html>
   );

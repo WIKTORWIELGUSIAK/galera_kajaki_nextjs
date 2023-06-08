@@ -2,7 +2,7 @@
 
 import type { Feature, GeoJsonProperties, LineString } from "geojson";
 
-export function CombineMultipleRiversIntoOne(coordinates: number[][][]) {
+export function combineMultipleRiversIntoOne(coordinates: number[][][]) {
   const features: Feature<LineString, GeoJsonProperties>[] = [];
   coordinates.map((coordinatesArray: number[][]) => {
     const feature = {

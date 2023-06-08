@@ -16,7 +16,6 @@ const usePathFinder = (
   features: Feature<LineString, GeoJsonProperties>[],
   points: MarkerProps[]
 ) => {
-  console.log("usePathFinder");
   const [pathFinder, setPathFinder] =
     useState<PathFinder<LineString, GeoJsonProperties>>();
   const [newRoadCoords, setNewRoadCoords] = useState<Position[]>([]);

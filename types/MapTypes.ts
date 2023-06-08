@@ -41,12 +41,11 @@ export type MarkerHandleDragEnd = MarkersState & {
   features: Feature<LineString, GeoJsonProperties>[];
 };
 
-export type LayerHandleClick = MarkersState & {
+export type AddMarkerOnLayerClickArgs = MarkersState & {
   lngLat: LngLat;
   features: Feature<LineString, GeoJsonProperties>[];
 };
 
-export type OnLoad = MarkersState & {
+export type OnLoad = {
   e: MapboxEvent<undefined>;
-  features: Feature<LineString, GeoJsonProperties>[];
 };
