@@ -1,5 +1,3 @@
-/** @format */
-
 export default function createSlug(name: string) {
   const slug = name
     .toLowerCase()

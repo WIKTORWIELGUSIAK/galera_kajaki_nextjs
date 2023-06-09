@@ -1,7 +1,5 @@
-/** @format */
-
-import Form from "@/Form/Form";
 import Map from "@/Map/Map";
+import Sidebar from "@/Sidebar/Sidebar";
 import { combineMultipleRiversIntoOne } from "@/combineMultipleRiversIntoOne";
 import createSourcesData from "@/createSourcesData";
 import { getRoads } from "@/getRoads";
@@ -13,7 +11,7 @@ export default async function Home({
   params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const data = await getRoads();
+  const roads = await getRoads();
   const selectedRivers = await getRiversBySlug(searchParams?.selected_rivers);
 
   return (
@@ -27,10 +25,10 @@ export default async function Home({
           longitude: 19.944544,
           zoom: 10,
         }}
-        data={createSourcesData(data)}
+        sourceData={createSourcesData(roads)}
         features={combineMultipleRiversIntoOne(selectedRivers.coordinates)}
       />
-      <Form />
+      <Sidebar roads={roads} />
     </div>
   );
 }

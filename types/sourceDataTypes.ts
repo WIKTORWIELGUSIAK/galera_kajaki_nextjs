@@ -1,5 +1,3 @@
-/** @format */
-
 import type { FeatureCollection, GeoJsonProperties, Geometry } from "geojson";
 
 export type SourceData = {

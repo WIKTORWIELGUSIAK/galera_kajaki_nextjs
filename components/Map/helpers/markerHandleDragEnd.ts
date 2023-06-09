@@ -1,5 +1,3 @@
-/** @format */
-
 import type { MarkerHandleDragEnd } from "@/MapTypes";
 import { findClosestCoords } from "./findClosestCords";
 

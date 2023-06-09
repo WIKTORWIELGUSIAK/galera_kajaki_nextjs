@@ -1,5 +1,3 @@
-/** @format */
-
 export type River = {
   name: string;
   slug: string;

@@ -1,5 +1,3 @@
-/** @format */
-
 import type { Feature, GeoJsonProperties, Point } from "geojson";
 import type { MarkerProps } from "react-map-gl";
 

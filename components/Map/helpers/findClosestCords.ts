@@ -1,5 +1,3 @@
-/** @format */
-
 import type { Position } from "geojson";
 
 export function findClosestCoords(

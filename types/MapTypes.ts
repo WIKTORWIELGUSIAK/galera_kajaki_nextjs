@@ -1,6 +1,3 @@
-/** @format */
-
-// import type { River } from "@/search_river";
 import type { SourceData } from "./sourceDataTypes";
 import type { Feature, GeoJsonProperties, LineString } from "geojson";
 import type { Dispatch } from "react";
@@ -26,7 +23,7 @@ export type MapProps = {
   width: string;
   height: string;
   mapStyle: MapStyle;
-  data: SourceData[];
+  sourceData: SourceData[];
   features: Feature<LineString, GeoJsonProperties>[];
 };
 

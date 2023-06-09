@@ -1,6 +1,3 @@
-/** @format */
-
-import React from "react";
 import { Layer, Source } from "react-map-gl";
 import type { MapSourceLayerProps } from "@/MapSourceLayerTypes";
 
@@ -9,7 +6,7 @@ const MapSourceLayer = ({
   layerProperties,
 }: MapSourceLayerProps) => (
   <Source {...sourceProperties}>
-    <Layer {...layerProperties} />
+    <Layer {...layerProperties} id={sourceProperties.id} />
   </Source>
 );
 export default MapSourceLayer;

@@ -1,5 +1,3 @@
-/** @format */
-
 import type { Road } from "@/RoadTypes";
 import { SERVER_URL } from "@/config";
 

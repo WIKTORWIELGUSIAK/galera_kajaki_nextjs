@@ -1,9 +1,5 @@
-/** @format */
-
 import type { Road } from "@/RoadTypes";
 import type { SourceData } from "@/sourceDataTypes";
-
-/** @format */
 
 const createSourcesData = (data: Road[]): SourceData[] => {
   const roadsData: SourceData[] = [];

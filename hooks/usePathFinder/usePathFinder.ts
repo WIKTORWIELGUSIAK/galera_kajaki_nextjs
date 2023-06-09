@@ -1,5 +1,3 @@
-/** @format */
-
 import PathFinder from "geojson-path-finder";
 import { useState, useEffect, useMemo } from "react";
 import { createPointFeature } from "@/createPointFeature";

@@ -1,5 +1,3 @@
-/** @format */
-
 import type { Feature } from "geojson";
 import type { LayerProps, SourceProps } from "react-map-gl";
 

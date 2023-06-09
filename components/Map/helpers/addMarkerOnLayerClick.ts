@@ -1,5 +1,3 @@
-/** @format */
-
 import type { AddMarkerOnLayerClickArgs } from "@/MapTypes";
 import { findClosestCoords } from "./findClosestCords";
 

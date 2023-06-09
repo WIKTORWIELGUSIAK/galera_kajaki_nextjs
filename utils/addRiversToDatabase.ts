@@ -1,5 +1,3 @@
-/** @format */
-
 import type { River } from "@/RiverTypes";
 import { SERVER_URL } from "@/config";
 

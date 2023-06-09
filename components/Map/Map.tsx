@@ -1,17 +1,13 @@
-/** @format */
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Map as MapGL, Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapSourceLayer from "@/MapSourceLayer/MapSourceLayer";
 import type { MapSourceLayerProps } from "@/MapSourceLayerTypes";
 import type { MapProps } from "@/MapTypes";
-import {
-  newRoadLayer,
-  selectedRiversLayer,
-  sourceProperties,
-} from "@/constants";
+import { newRoadLayer, sourceProperties } from "@/constants";
 import { createLineFeature } from "@/createLineFeature";
 import usePathFinder from "@/hooks/usePathFinder/usePathFinder";
 import { addMarkerOnLayerClick } from "./helpers/addMarkerOnLayerClick";
@@ -24,15 +20,39 @@ const Map = ({
   width,
   height,
   mapStyle,
-  data,
+  sourceData,
   features,
 }: MapProps) => {
   const [markers, setMarkers] = useState<MarkerProps[]>([]);
   const newRoadCoordinates = usePathFinder(features, markers);
   const newRoadFeatures = createLineFeature(newRoadCoordinates);
-
+  const searchParams = useSearchParams();
   const mapRef = useRef<MapRef>(null);
   useEffect(() => {
+    const map = mapRef.current;
+    const style = map?.getMap().getStyle();
+    const roadLayers = style?.layers.filter((layer) =>
+      /^road\d+/.test(layer.id)
+    );
+    if (searchParams.toString().includes("selected_road")) {
+      roadLayers?.map((layer) => {
+        map?.getMap().setLayoutProperty(layer.id, "visibility", "none");
+      });
+      map
+        ?.getMap()
+        .setLayoutProperty(
+          `road${searchParams.toString().split("=")[1]}`,
+          "visibility",
+          "visible"
+        );
+    } else {
+      roadLayers?.map((layer) => {
+        map?.getMap().setLayoutProperty(layer.id, "visibility", "visible");
+      });
+    }
+  }, [searchParams]);
+  useEffect(() => {
+    const map = mapRef.current;
     const handleLayerClick = ({ lngLat }: MapLayerMouseEvent) => {
       addMarkerOnLayerClick({
         lngLat,
@@ -41,9 +61,6 @@ const Map = ({
         features,
       });
     };
-
-    const map = mapRef.current;
-
     map?.on("click", "selectedRivers", handleLayerClick);
 
     return () => {
@@ -77,12 +94,7 @@ const Map = ({
             }
           />
         ))}
-      <MapSourceLayer
-        sourceProperties={sourceProperties(features, "selectedRivers")}
-        layerProperties={selectedRiversLayer}
-      />
-
-      {data.map((road: MapSourceLayerProps) => (
+      {sourceData.map((road: MapSourceLayerProps) => (
         <MapSourceLayer
           key={road.sourceProperties.id}
           sourceProperties={road.sourceProperties}

@@ -1,5 +1,3 @@
-/** @format */
-
 import type { Feature, GeoJsonProperties, LineString } from "geojson";
 
 export function combineMultipleRiversIntoOne(coordinates: number[][][]) {

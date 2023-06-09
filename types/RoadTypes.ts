@@ -1,5 +1,3 @@
-/** @format */
-
 export type Road = {
   id: number;
   name: string;

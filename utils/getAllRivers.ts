@@ -1,5 +1,3 @@
-/** @format */
-
 import { SERVER_URL } from "@/config";
 
 export const getAllRivers = async () => {
