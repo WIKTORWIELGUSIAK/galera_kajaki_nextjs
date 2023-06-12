@@ -13,7 +13,7 @@ const createSourcesData = (data: Road[]): SourceData[] => {
               type: "Feature",
               geometry: {
                 type: "LineString",
-                coordinates: JSON.parse(road.roadCoordinates),
+                coordinates: road.roadCoordinates,
               },
               properties: {
                 title: "Road",
@@ -29,7 +29,7 @@ const createSourcesData = (data: Road[]): SourceData[] => {
         type: "line",
         source: `road${road.id}`,
         paint: {
-          "line-color": `${JSON.parse(road.properties).color}`,
+          "line-color": `${road.properties.color}`,
           "line-width": 6,
           "line-opacity": 1,
         },

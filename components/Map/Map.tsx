@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Map as MapGL, Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapSourceLayer from "@/MapSourceLayer/MapSourceLayer";
@@ -10,6 +10,8 @@ import type { MapProps } from "@/MapTypes";
 import { newRoadLayer, sourceProperties } from "@/constants";
 import { createLineFeature } from "@/createLineFeature";
 import usePathFinder from "@/hooks/usePathFinder/usePathFinder";
+import useStore from "@/store";
+import { useGetValueFromSearchParams } from "@/useGetValueFromSearchParams";
 import { addMarkerOnLayerClick } from "./helpers/addMarkerOnLayerClick";
 import { markerHandleDragEnd } from "./helpers/markerHandleDragEnd";
 import { onLoad } from "./helpers/onLoad";
@@ -27,30 +29,38 @@ const Map = ({
   const newRoadCoordinates = usePathFinder(features, markers);
   const newRoadFeatures = createLineFeature(newRoadCoordinates);
   const searchParams = useSearchParams();
+  const selectedRoad = useGetValueFromSearchParams("selected_road");
   const mapRef = useRef<MapRef>(null);
-  useEffect(() => {
+  const { roadId, setRoadId } = useStore();
+
+  const displaySelectedRoads = useCallback(() => {
     const map = mapRef.current;
     const style = map?.getMap().getStyle();
     const roadLayers = style?.layers.filter((layer) =>
       /^road\d+/.test(layer.id)
     );
+
     if (searchParams.toString().includes("selected_road")) {
-      roadLayers?.map((layer) => {
-        map?.getMap().setLayoutProperty(layer.id, "visibility", "none");
+      roadLayers?.forEach((layer) => {
+        const opacity = layer.id === `road${selectedRoad}` ? 1 : 0.1;
+        map?.getMap().setPaintProperty(layer.id, "line-opacity", opacity);
+        setRoadId(null);
       });
-      map
-        ?.getMap()
-        .setLayoutProperty(
-          `road${searchParams.toString().split("=")[1]}`,
-          "visibility",
-          "visible"
-        );
+    } else if (roadId !== null) {
+      roadLayers?.forEach((layer) => {
+        const opacity = layer.id === `road${roadId}` ? 1 : 0.1;
+        map?.getMap().setPaintProperty(layer.id, "line-opacity", opacity);
+      });
     } else {
-      roadLayers?.map((layer) => {
-        map?.getMap().setLayoutProperty(layer.id, "visibility", "visible");
+      roadLayers?.forEach((layer) => {
+        map?.getMap().setPaintProperty(layer.id, "line-opacity", 1);
       });
     }
-  }, [searchParams]);
+  }, [roadId, searchParams, selectedRoad, setRoadId]);
+
+  useEffect(() => {
+    displaySelectedRoads();
+  }, [displaySelectedRoads, roadId, searchParams]);
   useEffect(() => {
     const map = mapRef.current;
     const handleLayerClick = ({ lngLat }: MapLayerMouseEvent) => {
@@ -71,7 +81,9 @@ const Map = ({
   return (
     <MapGL
       onLoad={(e) => onLoad(e)}
+      onStyleData={displaySelectedRoads}
       ref={mapRef}
+      styleDiffing={true}
       initialViewState={initialViewState}
       style={{ width, height }}
       mapStyle={mapStyle}

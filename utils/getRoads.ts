@@ -3,7 +3,10 @@ import { SERVER_URL } from "@/config";
 
 export const getRoads = async (): Promise<Road[]> => {
   try {
-    const response = await fetch(`${SERVER_URL}/getRoads`);
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const response = await fetch(`${SERVER_URL}/getRoads`, { headers });
 
     if (!response.ok) {
       if (response.status === 404) {
