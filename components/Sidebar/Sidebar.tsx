@@ -1,6 +1,7 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import Form from "@/Form/Form";
+import RoadInformations from "@/RoadInformations/RoadInformations";
 import type { Road } from "@/RoadTypes";
 import { findObjectById } from "@/findObjectById";
 import useStore from "@/store";
@@ -50,7 +51,7 @@ const Sidebar = ({ roads }: SidebarProps) => {
                       onClick={onClickHandler}
                       key={road.id}
                       onMouseEnter={() => onMouseEnterHandler(road)}
-                      className="flex w-full justify-between rounded-xl bg-wood px-2 py-1 font-semibold text-white"
+                      className="flex w-full cursor-pointer justify-between rounded-xl bg-wood px-2 py-1 font-semibold text-white"
                     >
                       <div>{road.name}</div>
                       <button>{"->"}</button>
@@ -58,12 +59,7 @@ const Sidebar = ({ roads }: SidebarProps) => {
                   ))}
                 </div>
               ) : (
-                <div>
-                  <h1 className=" text-l font-bold">Nazwa trasy:</h1>
-                  <p>{selectedRoad?.name}</p>
-                  <h1 className=" text-l font-bold">Opis trasy:</h1>
-                  <p>{selectedRoad?.properties.description}</p>
-                </div>
+                <RoadInformations road={selectedRoad} />
               )}
             </div>
           </div>
