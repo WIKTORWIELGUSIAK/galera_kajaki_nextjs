@@ -3,7 +3,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import createSlug from "@/createSlug";
 import type { FormEvent } from "react";
 
-const Form = () => {
+const SelectRiverForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -44,4 +44,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default SelectRiverForm;

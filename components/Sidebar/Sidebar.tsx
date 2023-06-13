@@ -1,9 +1,9 @@
 "use client";
-import Form from "@/Form/Form";
 import RoadButton from "@/RoadButton/RoadButton";
 import RoadInformations from "@/RoadInformations/RoadInformations";
 import type { Road } from "@/RoadTypes";
 import { findObjectById } from "@/findObjectById";
+import SelectRiverForm from "@/forms/SelectRiverForm/SelectRiverForm";
 import useStore from "@/store";
 import { useGetValueFromSearchParams } from "@/useGetValueFromSearchParams";
 
@@ -14,6 +14,7 @@ type SidebarProps = {
 const Sidebar = ({ roads }: SidebarProps) => {
   const { setRoadId } = useStore();
   const displayInfo = useGetValueFromSearchParams("selected_road");
+  const addMode = useGetValueFromSearchParams("add_road");
 
   const onMouseLeaveHandler = () => {
     setRoadId(null);
@@ -26,8 +27,10 @@ const Sidebar = ({ roads }: SidebarProps) => {
   return (
     <div className="absolute left-2 top-2 z-50 flex flex-col bg-wood">
       <div className="left-0  top-0 m-3 flex w-[250px] flex-col gap-1 rounded-lg bg-white p-4 shadow-md">
-        {edit ? (
-          <Form />
+        {addMode ? (
+          <SelectRiverForm />
+        ) : edit ? (
+          <div>jo</div>
         ) : (
           <div>
             <h1 className=" w-full text-left text-2xl font-extrabold text-[#512b1e]">
@@ -39,6 +42,7 @@ const Sidebar = ({ roads }: SidebarProps) => {
                   className="flex w-3/4 flex-col gap-1"
                   onMouseLeave={onMouseLeaveHandler}
                 >
+                  <RoadButton name="Dodaj trasę" />
                   {roads.map((road) => (
                     <RoadButton key={road.id} road={road} />
                   ))}
