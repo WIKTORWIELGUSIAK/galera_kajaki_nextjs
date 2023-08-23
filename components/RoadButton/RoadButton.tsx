@@ -1,6 +1,6 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import type { Road } from "@/RoadTypes";
+import { useQueryParams } from "@/hooks/useQueryParams";
 import useStore from "@/store";
 interface NameProps {
   name: string;
@@ -16,17 +16,13 @@ type RoadButtonProps = NameProps | RoadProps;
 
 const RoadButton = ({ road, name }: RoadButtonProps) => {
   const { roadId, setRoadId } = useStore();
-  const router = useRouter();
-
-  const searchParams = useSearchParams();
+  const { mutateQueryParams } = useQueryParams();
   const onClickHandler = () => {
-    const displayRoadInfo = new URLSearchParams("selected_road");
-    const addRoad = new URLSearchParams("add_road");
-    router.push(
-      `?${searchParams}${road ? displayRoadInfo : addRoad}${
-        road ? roadId : "true"
-      }`
-    );
+    if (roadId) {
+      mutateQueryParams({ selected_road: roadId });
+    } else {
+      mutateQueryParams({ add_road: true });
+    }
   };
   const onMouseEnterHandler = (road: Road | undefined) => {
     road ? setRoadId(road.id) : setRoadId(null);
@@ -34,7 +30,6 @@ const RoadButton = ({ road, name }: RoadButtonProps) => {
   return (
     <button
       onClick={onClickHandler}
-      //   onMouseEnter={() => onMouseEnterHandler(road)}
       onMouseEnter={() => onMouseEnterHandler(road)}
       className="flex w-full cursor-pointer justify-between rounded-xl bg-wood px-2 py-1 font-semibold text-white"
     >
