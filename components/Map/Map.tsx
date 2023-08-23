@@ -79,9 +79,9 @@ export default function Map({
     [features, markers]
   );
   useEffect(() => {
-    mapRef.current?.on("click", "selectedRivers", handleLayerClick);
+    mapRef.current?.on("click", "selectedRivers", () => handleLayerClick);
     return () => {
-      mapRef.current?.off("click", "selectedRivers", handleLayerClick);
+      mapRef.current?.off("click", "selectedRivers", () => handleLayerClick);
     };
   }, [features, markers, selectedRivers.length, handleLayerClick]);
   return (

@@ -5,7 +5,7 @@ export const onLoad = ({ e, handleLayerClick }: OnLoadArgs): void => {
 
   // todo: Create autosuggestion for id
 
-  target.on("click", "selectedRivers", handleLayerClick);
+  target.on("click", "selectedRivers", () => handleLayerClick);
   target.on("mouseenter", "selectedRivers", () => {
     target.getCanvas().style.cursor = "pointer";
   });
