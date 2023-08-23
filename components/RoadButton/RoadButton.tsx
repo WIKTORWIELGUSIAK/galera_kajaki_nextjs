@@ -1,18 +1,8 @@
 import React from "react";
+import type { RoadButtonProps } from "@/RoadButtonTypes";
 import type { Road } from "@/RoadTypes";
 import { useQueryParams } from "@/hooks/useQueryParams";
 import useStore from "@/store";
-interface NameProps {
-  name: string;
-  road?: never;
-}
-
-interface RoadProps {
-  road: Road;
-  name?: never;
-}
-
-type RoadButtonProps = NameProps | RoadProps;
 
 const RoadButton = ({ road, name }: RoadButtonProps) => {
   const { roadId, setRoadId } = useStore();
