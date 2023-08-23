@@ -2,23 +2,22 @@ import Map from "@/Map/Map";
 import Sidebar from "@/Sidebar/Sidebar";
 import { combineMultipleRiversIntoOne } from "@/combineMultipleRiversIntoOne";
 import createSourcesData from "@/createSourcesData";
-import { getRoads } from "@/getRoads";
-import { getRiversBySlug } from "@/search_river";
+
+import fetchRivers from "./api/fetchRivers.GET";
+import fetchRoads from "./api/fetchRoads.GET";
 
 export default async function Home({
   searchParams,
 }: {
   params: { slug: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Record<string, string>;
 }) {
-  const roads = await getRoads();
-  const selectedRivers = await getRiversBySlug(searchParams?.selected_rivers);
+  const roads = await fetchRoads();
+  const rivers = await fetchRivers(searchParams);
 
   return (
     <div className="h-screen w-screen">
       <Map
-        width="100%"
-        height="100%"
         mapStyle="mapbox://styles/mapbox/outdoors-v12"
         initialViewState={{
           latitude: 50.049683,
@@ -26,7 +25,7 @@ export default async function Home({
           zoom: 10,
         }}
         sourceData={createSourcesData(roads)}
-        features={combineMultipleRiversIntoOne(selectedRivers.coordinates)}
+        features={combineMultipleRiversIntoOne(rivers.coordinates)}
       />
       <Sidebar roads={roads} />
     </div>

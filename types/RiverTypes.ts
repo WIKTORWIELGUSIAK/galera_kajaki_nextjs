@@ -1,5 +1,5 @@
-export type River = {
+export type Rivers = {
   name: string;
   slug: string;
-  coordinates: Array<Array<Array<number>>>;
+  coordinates: number[][][];
 };

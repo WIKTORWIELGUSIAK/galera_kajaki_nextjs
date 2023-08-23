@@ -32,15 +32,15 @@ const RoadButton = ({ road, name }: RoadButtonProps) => {
     road ? setRoadId(road.id) : setRoadId(null);
   };
   return (
-    <div
+    <button
       onClick={onClickHandler}
       //   onMouseEnter={() => onMouseEnterHandler(road)}
       onMouseEnter={() => onMouseEnterHandler(road)}
       className="flex w-full cursor-pointer justify-between rounded-xl bg-wood px-2 py-1 font-semibold text-white"
     >
-      <div>{road ? road.name : name}</div>
-      <button>{road ? "->" : "+"}</button>
-    </div>
+      {road ? road.name : name}
+      <span>{road ? "->" : "+"}</span>
+    </button>
   );
 };
 

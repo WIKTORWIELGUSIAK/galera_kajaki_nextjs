@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import React from "react";
 import type { Road } from "@/RoadTypes";
 type RoadInformationsProps = {
@@ -5,10 +6,13 @@ type RoadInformationsProps = {
 };
 const RoadInformations = ({ road }: RoadInformationsProps) => (
   <div>
-    <h1 className=" text-l font-bold">Nazwa trasy:</h1>
+    <h2 className="text-l font-bold">Nazwa trasy:</h2>
     <p>{road?.name}</p>
-    <h1 className=" text-l font-bold">Opis trasy:</h1>
+    <h2 className="text-l font-bold">Opis trasy:</h2>
     <p>{road?.properties?.description}</p>
+    <button>
+      <Icon icon="mdi-light:arrow-left-circle"></Icon>
+    </button>
   </div>
 );
 

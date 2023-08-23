@@ -1,11 +1,11 @@
 "use client";
 import RoadButton from "@/RoadButton/RoadButton";
+import RoadForm from "@/RoadForm/RoadForm";
 import RoadInformations from "@/RoadInformations/RoadInformations";
 import type { Road } from "@/RoadTypes";
 import { findObjectById } from "@/findObjectById";
-import SelectRiverForm from "@/forms/SelectRiverForm/SelectRiverForm";
+import { useGetValueFromSearchParams } from "@/hooks/useGetValueFromSearchParams";
 import useStore from "@/store";
-import { useGetValueFromSearchParams } from "@/useGetValueFromSearchParams";
 
 type SidebarProps = {
   roads: Road[];
@@ -22,20 +22,21 @@ const Sidebar = ({ roads }: SidebarProps) => {
 
   const edit = false;
   const selectedRoadId = useGetValueFromSearchParams("selected_road");
-
   const selectedRoad = findObjectById(roads, selectedRoadId);
   return (
     <div className="absolute left-2 top-2 z-50 flex flex-col bg-wood">
       <div className="left-0  top-0 m-3 flex w-[250px] flex-col gap-1 rounded-lg bg-white p-4 shadow-md">
+        <h1 className=" w-full text-left text-2xl font-extrabold text-[#512b1e]">
+          GALERA
+        </h1>
         {addMode ? (
-          <SelectRiverForm />
+          <RoadForm />
         ) : edit ? (
-          <div>jo</div>
+          <div>
+            <RoadForm></RoadForm>
+          </div>
         ) : (
           <div>
-            <h1 className=" w-full text-left text-2xl font-extrabold text-[#512b1e]">
-              GALERA
-            </h1>
             <div>
               {!displayInfo ? (
                 <div

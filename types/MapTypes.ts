@@ -1,7 +1,8 @@
 import type { SourceData } from "./sourceDataTypes";
 import type { Feature, GeoJsonProperties, LineString } from "geojson";
+import type { MapboxEvent } from "mapbox-gl";
 import type { Dispatch } from "react";
-import type { LngLat, MapboxEvent, MarkerProps } from "react-map-gl";
+import type { LngLat, MapLayerMouseEvent, MarkerProps } from "react-map-gl";
 
 type InitialViewState = {
   latitude: number;
@@ -20,8 +21,6 @@ type MapStyle =
   | "mapbox://styles/mapbox/navigation-night-v1";
 export type MapProps = {
   initialViewState: InitialViewState;
-  width: string;
-  height: string;
   mapStyle: MapStyle;
   sourceData: SourceData[];
   features: Feature<LineString, GeoJsonProperties>[];
@@ -43,6 +42,7 @@ export type AddMarkerOnLayerClickArgs = MarkersState & {
   features: Feature<LineString, GeoJsonProperties>[];
 };
 
-export type OnLoad = {
+export type OnLoadArgs = {
   e: MapboxEvent<undefined>;
+  handleLayerClick: ({ lngLat }: MapLayerMouseEvent) => void;
 };
