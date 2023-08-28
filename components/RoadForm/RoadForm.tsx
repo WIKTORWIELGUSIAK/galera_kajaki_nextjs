@@ -1,10 +1,10 @@
 "use client";
 import { useState, type FormEvent } from "react";
-import Input from "@/Input/Input";
+import InputField from "@/InputField/InputField";
 import type { InputProps } from "@/InputTypes";
 import fetchRoad from "@/api/fetchRoad.POST";
 import createSlug from "@/createSlug";
-import { useGetValueFromSearchParams } from "@/hooks/useGetValueFromSearchParams";
+import useGetValueFromSearchParams from "@/hooks/useGetValueFromSearchParams";
 import { useQueryParams } from "@/hooks/useQueryParams";
 import useStore from "@/store";
 import { formConfig } from "./config";
@@ -52,14 +52,15 @@ export default function RoadForm() {
       [name]: value,
     }));
   };
+  console.log(formData);
   return (
     <div className="flex flex-col gap-2">
       <form onSubmit={addRiver} className="flex w-full flex-col gap-y-2">
-        <Input
+        <InputField
           label="Dodaj rzeki do wyświetlania"
           id="selected_rivers"
           name="selected_rivers"
-          onChange={handleChange}
+          handleChange={handleChange}
         />
         <button className="rounded-md bg-wood py-1 font-semibold text-white shadow-md hover:bg-blue-600">
           Dodaj
@@ -70,7 +71,11 @@ export default function RoadForm() {
         onSubmit={(e) => addRoad(e)}
       >
         {formConfig.map((inputProps: InputProps) => (
-          <Input key={inputProps.id} {...inputProps} onChange={handleChange} />
+          <InputField
+            key={inputProps.id}
+            {...inputProps}
+            handleChange={handleChange}
+          />
         ))}
         <button className=" rounded-md bg-wood px-3 py-1 font-semibold text-white shadow-md">
           Dodaj trasę

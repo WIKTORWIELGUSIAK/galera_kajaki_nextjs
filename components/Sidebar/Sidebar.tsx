@@ -4,14 +4,14 @@ import RoadForm from "@/RoadForm/RoadForm";
 import RoadInformations from "@/RoadInformations/RoadInformations";
 import type { Road } from "@/RoadTypes";
 import { findObjectById } from "@/findObjectById";
-import { useGetValueFromSearchParams } from "@/hooks/useGetValueFromSearchParams";
+import useGetValueFromSearchParams from "@/hooks/useGetValueFromSearchParams";
 import useStore from "@/store";
 
 type SidebarProps = {
   roads: Road[];
 };
 
-const Sidebar = ({ roads }: SidebarProps) => {
+export default function Sidebar({ roads }: SidebarProps) {
   const { setRoadId } = useStore();
   const displayInfo = useGetValueFromSearchParams("selected_road");
   const addMode = useGetValueFromSearchParams("add_road");
@@ -57,6 +57,4 @@ const Sidebar = ({ roads }: SidebarProps) => {
       </div>
     </div>
   );
-};
-
-export default Sidebar;
+}

@@ -12,7 +12,7 @@ import {
   sourceProperties,
 } from "@/constants";
 import { createLineFeature } from "@/createLineFeature";
-import { useGetValueFromSearchParams } from "@/hooks/useGetValueFromSearchParams";
+import useGetValueFromSearchParams from "@/hooks/useGetValueFromSearchParams";
 import usePathFinder from "@/hooks/usePathFinder";
 import useStore from "@/store";
 import { addMarkerOnLayerClick } from "./helpers/addMarkerOnLayerClick";

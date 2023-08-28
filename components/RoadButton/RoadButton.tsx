@@ -4,7 +4,7 @@ import type { Road } from "@/RoadTypes";
 import { useQueryParams } from "@/hooks/useQueryParams";
 import useStore from "@/store";
 
-const RoadButton = ({ road, name }: RoadButtonProps) => {
+export default function RoadButton({ road, name }: RoadButtonProps) {
   const { roadId, setRoadId } = useStore();
   const { mutateQueryParams } = useQueryParams();
   const onClickHandler = () => {
@@ -27,6 +27,4 @@ const RoadButton = ({ road, name }: RoadButtonProps) => {
       <span>{road ? "->" : "+"}</span>
     </button>
   );
-};
-
-export default RoadButton;
+}

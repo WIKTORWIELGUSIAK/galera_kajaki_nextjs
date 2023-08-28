@@ -1,6 +1,6 @@
 import type { Rivers } from "@/RiverTypes";
 import { API, endpoints } from "@/api/endpoints";
-import { pick } from "@/helpers/pick";
+import pick from "@/helpers/pick";
 
 export default async function fetchRivers(
   searchParams: Record<string, string> | undefined
@@ -9,9 +9,6 @@ export default async function fetchRivers(
   const params = new URLSearchParams(actualParams);
   const url = new URL(`${API}/${endpoints.roads.getRivers}`);
   url.search = params.toString();
-
-  //   url.search = `selected_rivers=${params.("selected_rivers")}`;
-  console.log(url.toString());
   try {
     const response = await fetch(url.href);
 

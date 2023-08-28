@@ -12,9 +12,6 @@ export async function POST(req: Request) {
         properties: roadsData.properties,
       },
     });
-
-    // Your database interaction code or any other processing goes here.
-    // For now, we'll just return the received data as the response.
     return NextResponse.json(roads);
   } catch (err) {
     console.error("Error in API route:", err);
