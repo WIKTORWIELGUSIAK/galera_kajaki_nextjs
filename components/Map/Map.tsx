@@ -32,6 +32,8 @@ export default function Map({
   const newRoadFeatures = createLineFeature(newRoadCoordinates);
   const searchParams = useSearchParams();
   const selectedRoad = useGetValueFromSearchParams("selected_road");
+  const addMode = useGetValueFromSearchParams("add_road");
+
   const selectedRivers = useGetValueFromSearchParams("selected_rivers");
   const mapRef = useRef<MapRef>(null);
 
@@ -116,13 +118,14 @@ export default function Map({
         sourceProperties={sourceProperties(features, "selectedRivers")}
         layerProperties={selectedRiversLayer}
       />
-      {sourceData.map((road: MapSourceLayerProps) => (
-        <MapSourceLayer
-          key={road.sourceProperties.id}
-          sourceProperties={road.sourceProperties}
-          layerProperties={road.layerProperties}
-        />
-      ))}
+      {!addMode &&
+        sourceData.map((road: MapSourceLayerProps) => (
+          <MapSourceLayer
+            key={road.sourceProperties.id}
+            sourceProperties={road.sourceProperties}
+            layerProperties={road.layerProperties}
+          />
+        ))}
       <MapSourceLayer
         sourceProperties={sourceProperties(newRoadFeatures, "newRoad")}
         layerProperties={newRoadLayer}
