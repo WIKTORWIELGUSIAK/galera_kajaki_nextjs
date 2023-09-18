@@ -1,11 +1,9 @@
 import type { OnLoadArgs } from "@/MapTypes";
 
-export const onLoad = ({ e, handleLayerClick }: OnLoadArgs): void => {
+export const onLoad = ({ e, setMapLoaded }: OnLoadArgs): void => {
   const { target } = e;
 
-  // todo: Create autosuggestion for id
-
-  target.on("click", "selectedRivers", () => handleLayerClick);
+  setMapLoaded(true);
   target.on("mouseenter", "selectedRivers", () => {
     target.getCanvas().style.cursor = "pointer";
   });

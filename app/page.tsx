@@ -1,8 +1,7 @@
-import Map from "@/Map/Map";
+import { Suspense, lazy } from "react";
+const Map = lazy(() => import("@/Map/Map"));
 import Sidebar from "@/Sidebar/Sidebar";
 import { combineMultipleRiversIntoOne } from "@/combineMultipleRiversIntoOne";
-import createSourcesData from "@/createSourcesData";
-
 import fetchRivers from "./api/fetchRivers.GET";
 import fetchRoads from "./api/fetchRoads.GET";
 
@@ -16,7 +15,7 @@ export default async function Home({
   const rivers = await fetchRivers(searchParams);
 
   return (
-    <div className="h-screen w-screen">
+    <Suspense fallback={<h1>Loading</h1>}>
       <Map
         mapStyle="mapbox://styles/mapbox/outdoors-v12"
         initialViewState={{
@@ -24,10 +23,10 @@ export default async function Home({
           longitude: 19.944544,
           zoom: 10,
         }}
-        sourceData={createSourcesData(roads)}
+        sourceData={roads}
         features={combineMultipleRiversIntoOne(rivers.coordinates)}
       />
       <Sidebar roads={roads} />
-    </div>
+    </Suspense>
   );
 }

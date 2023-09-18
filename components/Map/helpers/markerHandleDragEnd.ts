@@ -19,6 +19,5 @@ export const markerHandleDragEnd = ({
     }
     return marker;
   });
-
-  setMarkers(updatedMarkers);
+  setMarkers ? setMarkers(updatedMarkers) : null;
 };

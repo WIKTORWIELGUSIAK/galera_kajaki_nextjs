@@ -10,7 +10,9 @@ type QueryValueType =
   | undefined;
 type ParamInput = Record<string, QueryValueType> | URLSearchParams;
 type SingleInput = [string, QueryValueType];
-type OptionsType = { mode?: "default" | "replace" | "append" | "delete" };
+type OptionsType = {
+  mode?: "default" | "replace" | "append" | "delete" | "reset";
+};
 
 export const useQueryParams = () => {
   const router = useRouter();
@@ -56,6 +58,9 @@ export const useQueryParams = () => {
         } else {
           Object.keys(input).forEach((key) => params.delete(key));
         }
+      } else if (mode === "reset") {
+        router.push(pathname);
+        return;
       } else {
         const append = mode === "append";
 

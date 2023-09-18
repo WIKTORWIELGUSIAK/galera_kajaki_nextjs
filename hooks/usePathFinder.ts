@@ -1,22 +1,22 @@
 import PathFinder from "geojson-path-finder";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { createPointFeature } from "@/createPointFeature";
+import useStore from "@/store";
 import type {
   Feature,
   FeatureCollection,
   GeoJsonProperties,
   LineString,
-  Position,
 } from "geojson";
 import type { MarkerProps } from "react-map-gl";
 
-const usePathFinder = (
+export default function usePathFinder(
   features: Feature<LineString, GeoJsonProperties>[],
   points: MarkerProps[]
-) => {
+) {
+  const { setNewRoadCoordinates } = useStore();
   const [pathFinder, setPathFinder] =
     useState<PathFinder<LineString, GeoJsonProperties>>();
-  const [newRoadCoords, setNewRoadCoords] = useState<Position[]>([]);
 
   useEffect(() => {
     const geoJSONObject: FeatureCollection<LineString> = {
@@ -34,14 +34,10 @@ const usePathFinder = (
       const endPoint = createPointFeature(points[1]);
       const path = pathFinder.findPath(startPoint, endPoint);
       if (path) {
-        setNewRoadCoords(path.path);
+        setNewRoadCoordinates(path.path);
       } else {
-        setNewRoadCoords([]);
+        setNewRoadCoordinates([]);
       }
     }
-  }, [points, pathFinder, features]);
-
-  return useMemo(() => newRoadCoords, [newRoadCoords]);
-};
-
-export default usePathFinder;
+  }, [points, pathFinder, features, setNewRoadCoordinates]);
+}

@@ -2,13 +2,11 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import type { NextRequest } from "next/server";
 
-// TODO: make it so it doesn't display all the rivers when given an empty string
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const selectedRivers = searchParams.get("selected_rivers");
   const rivers = selectedRivers?.split(",");
   if (rivers) {
-    console.log(rivers);
     try {
       const riversData = await prisma.riversV2.findMany({
         where: {
@@ -37,7 +35,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Server error" }, { status: 500 });
     }
   } else {
-    console.log("noRivers");
     return NextResponse.json({
       names: "",
       slugs: "",

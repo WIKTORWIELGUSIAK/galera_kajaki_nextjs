@@ -1,8 +1,8 @@
-import type { SourceData } from "./sourceDataTypes";
+import type { RoadType } from "./RoadType";
 import type { Feature, GeoJsonProperties, LineString } from "geojson";
 import type { MapboxEvent } from "mapbox-gl";
-import type { Dispatch } from "react";
-import type { LngLat, MapLayerMouseEvent, MarkerProps } from "react-map-gl";
+import type { Dispatch, SetStateAction } from "react";
+import type { LngLat, MarkerProps } from "react-map-gl";
 
 type InitialViewState = {
   latitude: number;
@@ -22,13 +22,14 @@ type MapStyle =
 export type MapProps = {
   initialViewState: InitialViewState;
   mapStyle: MapStyle;
-  sourceData: SourceData[];
+  sourceData: RoadType[];
   features: Feature<LineString, GeoJsonProperties>[];
 };
 
 type MarkersState = {
   markers: MarkerProps[];
-  setMarkers: Dispatch<React.SetStateAction<MarkerProps[]>>;
+  setMarkers?: (newMarkerProps: MarkerProps[]) => void;
+  addMarker?: (newMarkerProps: MarkerProps) => void;
 };
 
 export type MarkerHandleDragEnd = MarkersState & {
@@ -44,5 +45,5 @@ export type AddMarkerOnLayerClickArgs = MarkersState & {
 
 export type OnLoadArgs = {
   e: MapboxEvent<undefined>;
-  handleLayerClick: ({ lngLat }: MapLayerMouseEvent) => void;
+  setMapLoaded: Dispatch<SetStateAction<boolean>>;
 };

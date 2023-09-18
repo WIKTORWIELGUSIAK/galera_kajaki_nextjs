@@ -1,44 +1,41 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Map as MapGL, Marker } from "react-map-gl";
-import MapSourceLayer from "@/MapSourceLayer/MapSourceLayer";
-import type { MapSourceLayerProps } from "@/MapSourceLayerTypes";
+import MapLayer from "@/MapLayer/MapLayer";
+import MapSource from "@/MapSource/MapSource";
 import type { MapProps } from "@/MapTypes";
-import {
-  newRoadLayer,
-  selectedRiversLayer,
-  sourceProperties,
-} from "@/constants";
+import type { RoadType } from "@/RoadType";
 import { createLineFeature } from "@/createLineFeature";
 import useGetValueFromSearchParams from "@/hooks/useGetValueFromSearchParams";
-import usePathFinder from "@/hooks/usePathFinder";
 import useStore from "@/store";
 import { addMarkerOnLayerClick } from "./helpers/addMarkerOnLayerClick";
 import { markerHandleDragEnd } from "./helpers/markerHandleDragEnd";
 import { onLoad } from "./helpers/onLoad";
-import type { MarkerProps, MapRef, MapLayerMouseEvent } from "react-map-gl";
+import type { MapMouseEvent } from "mapbox-gl";
+import type { MapRef } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-
 export default function Map({
   initialViewState,
   mapStyle,
   sourceData,
   features,
 }: MapProps) {
-  const [markers, setMarkers] = useState<MarkerProps[]>([]);
-  const newRoadCoordinates = usePathFinder(features, markers);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const {
+    roadId,
+    setRoadId,
+    newRoadCoordinates,
+    color,
+    markers,
+    setMarkers,
+    addMarker,
+  } = useStore();
   const newRoadFeatures = createLineFeature(newRoadCoordinates);
-  const searchParams = useSearchParams();
   const selectedRoad = useGetValueFromSearchParams("selected_road");
   const addMode = useGetValueFromSearchParams("add_road");
-
   const selectedRivers = useGetValueFromSearchParams("selected_rivers");
   const mapRef = useRef<MapRef>(null);
-
-  const { roadId, setRoadId, setNewRoadCoordinates } = useStore();
-
   const displaySelectedRoads = useCallback(() => {
     const map = mapRef.current;
     const style = map?.getMap().getStyle();
@@ -46,10 +43,9 @@ export default function Map({
       /^road\d+/.test(layer.id)
     );
 
-    if (searchParams.toString().includes("selected_road")) {
+    if (selectedRoad) {
       roadLayers?.forEach((layer) => {
-        const opacity = layer.id === `road${selectedRoad}` ? 1 : 0.1;
-        map?.getMap().setPaintProperty(layer.id, "line-opacity", opacity);
+        map?.getMap().setPaintProperty(layer.id, "line-opacity", 0);
         setRoadId(null);
       });
     } else if (roadId !== null) {
@@ -58,37 +54,40 @@ export default function Map({
         map?.getMap().setPaintProperty(layer.id, "line-opacity", opacity);
       });
     } else {
+      setMarkers([]);
       roadLayers?.forEach((layer) => {
         map?.getMap().setPaintProperty(layer.id, "line-opacity", 1);
       });
     }
-  }, [roadId, searchParams, selectedRoad, setRoadId]);
-  useEffect(() => {
-    setNewRoadCoordinates(newRoadCoordinates);
-  }, [newRoadCoordinates, setNewRoadCoordinates]);
+  }, [roadId, selectedRoad, setMarkers, setRoadId]);
   useEffect(() => {
     displaySelectedRoads();
-  }, [displaySelectedRoads, roadId, searchParams]);
+  }, [displaySelectedRoads]);
   const handleLayerClick = useCallback(
-    ({ lngLat }: MapLayerMouseEvent) => {
+    ({ lngLat }: MapMouseEvent) => {
       addMarkerOnLayerClick({
         lngLat,
         markers,
-        setMarkers,
+        addMarker,
         features,
       });
     },
-    [features, markers]
+    [addMarker, features, markers]
   );
   useEffect(() => {
-    mapRef.current?.on("click", "selectedRivers", () => handleLayerClick);
+    const map = mapRef.current;
+    map?.on("click", "selectedRivers", handleLayerClick);
     return () => {
-      mapRef.current?.off("click", "selectedRivers", () => handleLayerClick);
+      map?.off("click", "selectedRivers", handleLayerClick);
     };
-  }, [features, markers, selectedRivers.length, handleLayerClick]);
+  }, [features, markers, selectedRivers, handleLayerClick, mapLoaded]);
+  useEffect(() => {
+    mapRef.current?.getMap().setPaintProperty("newRoad", "line-color", color);
+  }, [color]);
+
   return (
     <MapGL
-      onLoad={(e) => onLoad({ e, handleLayerClick })}
+      onLoad={(e) => onLoad({ e, setMapLoaded })}
       onStyleData={displaySelectedRoads}
       ref={mapRef}
       styleDiffing={true}
@@ -114,22 +113,22 @@ export default function Map({
             }
           />
         ))}
-      <MapSourceLayer
-        sourceProperties={sourceProperties(features, "selectedRivers")}
-        layerProperties={selectedRiversLayer}
-      />
+      <MapSource id="selectedRivers" features={features}>
+        <MapLayer color="blue" id="selectedRivers" />
+      </MapSource>
       {!addMode &&
-        sourceData.map((road: MapSourceLayerProps) => (
-          <MapSourceLayer
-            key={road.sourceProperties.id}
-            sourceProperties={road.sourceProperties}
-            layerProperties={road.layerProperties}
-          />
+        sourceData.map((road: RoadType) => (
+          <MapSource
+            key={road.id}
+            id={`road${road.id}`}
+            features={createLineFeature(road.roadCoordinates)}
+          >
+            <MapLayer color={road.properties.color} id={`road${road.id}`} />
+          </MapSource>
         ))}
-      <MapSourceLayer
-        sourceProperties={sourceProperties(newRoadFeatures, "newRoad")}
-        layerProperties={newRoadLayer}
-      />
+      <MapSource id="newRoad" features={newRoadFeatures}>
+        <MapLayer color={color} id="newRoad" />
+      </MapSource>
     </MapGL>
   );
 }

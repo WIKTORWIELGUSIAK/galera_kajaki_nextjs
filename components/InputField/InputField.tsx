@@ -13,7 +13,7 @@ interface FieldProps extends InputHTMLAttributes<HTMLDivElement> {
   }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 export default React.forwardRef<HTMLDivElement, FieldProps>(function InputField(
-  { className, type, name, label, handleChange, ...props }: FieldProps,
+  { className, type, name, label, value, handleChange, ...props }: FieldProps,
   ref: React.Ref<HTMLDivElement>
 ) {
   return (
@@ -23,7 +23,7 @@ export default React.forwardRef<HTMLDivElement, FieldProps>(function InputField(
       {...props}
     >
       <Label label={label} htmlFor={name} />
-      <Input type={type} name={name} onChange={handleChange} />
+      <Input type={type} name={name} value={value} onChange={handleChange} />
     </div>
   );
 });

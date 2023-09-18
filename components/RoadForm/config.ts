@@ -2,12 +2,12 @@ import type { InputProps } from "@/InputTypes";
 
 export const formConfig: InputProps[] = [
   {
-    label: "Nazwa trasy",
+    label: "Nazwa trasy: ",
     id: "roadName",
     name: "roadName",
   },
   {
-    label: "Opis trasy",
+    label: "Opis trasy: ",
     id: "roadDescription",
     name: "roadDescription",
   },

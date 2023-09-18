@@ -1,13 +1,18 @@
+import { ArrowRightCircle, PlusCircle } from "lucide-react";
 import React from "react";
+
 import type { RoadButtonProps } from "@/RoadButtonTypes";
 import type { Road } from "@/RoadTypes";
 import { useQueryParams } from "@/hooks/useQueryParams";
 import useStore from "@/store";
 
 export default function RoadButton({ road, name }: RoadButtonProps) {
-  const { roadId, setRoadId } = useStore();
+  const { roadId, setRoadId, setNewRoadCoordinates, setColor } = useStore();
   const { mutateQueryParams } = useQueryParams();
   const onClickHandler = () => {
+    if (road) {
+      setNewRoadCoordinates(road.roadCoordinates);
+    }
     if (roadId) {
       mutateQueryParams({ selected_road: roadId });
     } else {
@@ -15,7 +20,12 @@ export default function RoadButton({ road, name }: RoadButtonProps) {
     }
   };
   const onMouseEnterHandler = (road: Road | undefined) => {
-    road ? setRoadId(road.id) : setRoadId(null);
+    if (road) {
+      setRoadId(road.id);
+      setColor(road.properties.color);
+    } else {
+      setRoadId(null);
+    }
   };
   return (
     <button
@@ -24,7 +34,7 @@ export default function RoadButton({ road, name }: RoadButtonProps) {
       className="flex w-full cursor-pointer justify-between rounded-xl bg-wood px-2 py-1 font-semibold text-white"
     >
       {road ? road.name : name}
-      <span>{road ? "->" : "+"}</span>
+      <span>{road ? <ArrowRightCircle /> : <PlusCircle />}</span>
     </button>
   );
 }
