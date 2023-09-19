@@ -2,16 +2,19 @@ import { Suspense, lazy } from "react";
 const Map = lazy(() => import("@/Map/Map"));
 import Sidebar from "@/Sidebar/Sidebar";
 import { combineMultipleRiversIntoOne } from "@/combineMultipleRiversIntoOne";
-import fetchRivers from "./api/fetchRivers.GET";
+// import fetchRivers from "./api/fetchRivers.GET";
 import fetchRoads from "./api/fetchRoads.GET";
 
-export default async function Home({
-  searchParams,
-}: {
+export default async function Home({}: // searchParams,
+{
   params: { slug: string };
   searchParams?: Record<string, string>;
 }) {
-  const rivers = await fetchRivers(searchParams);
+  const rivers = {
+    names: "",
+    slugs: "",
+    coordinates: [[]],
+  };
   const roads = await fetchRoads();
 
   return (
