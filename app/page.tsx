@@ -3,7 +3,7 @@ const Map = lazy(() => import("@/Map/Map"));
 import Sidebar from "@/Sidebar/Sidebar";
 import { combineMultipleRiversIntoOne } from "@/combineMultipleRiversIntoOne";
 // import fetchRivers from "./api/fetchRivers.GET";
-import fetchRoads from "./api/fetchRoads.GET";
+// import fetchRoads from "./api/fetchRoads.GET";
 
 export default async function Home({}: // searchParams,
 {
@@ -15,7 +15,7 @@ export default async function Home({}: // searchParams,
     slugs: "",
     coordinates: [[]],
   };
-  const roads = await fetchRoads();
+  const roads = [];
 
   return (
     <Suspense fallback={<h1>Loading</h1>}>
