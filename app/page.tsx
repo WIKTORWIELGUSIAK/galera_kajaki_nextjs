@@ -11,8 +11,8 @@ export default async function Home({
   params: { slug: string };
   searchParams?: Record<string, string>;
 }) {
-  const roads = await fetchRoads();
   const rivers = await fetchRivers(searchParams);
+  const roads = await fetchRoads();
 
   return (
     <Suspense fallback={<h1>Loading</h1>}>

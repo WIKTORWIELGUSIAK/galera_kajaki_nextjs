@@ -8,8 +8,8 @@ export default async function fetchRoads(): Promise<Road[]> {
       const errorMessage = `Failed to fetch roads data: ${response.status} ${response.statusText}`;
       throw new Error(errorMessage);
     }
-
-    return response.json();
+    const roadsData = await response.json();
+    return roadsData;
   } catch (error) {
     console.error("Error fetching roads:", error);
     throw new Error("An error occurred while fetching roads data.");
