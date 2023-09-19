@@ -8,6 +8,7 @@ import type { MapProps } from "@/MapTypes";
 import type { RoadType } from "@/RoadType";
 import { createLineFeature } from "@/createLineFeature";
 import useGetValueFromSearchParams from "@/hooks/useGetValueFromSearchParams";
+import usePathFinder from "@/hooks/usePathFinder";
 import useStore from "@/store";
 import { addMarkerOnLayerClick } from "./helpers/addMarkerOnLayerClick";
 import { markerHandleDragEnd } from "./helpers/markerHandleDragEnd";
@@ -31,6 +32,7 @@ export default function Map({
     setMarkers,
     addMarker,
   } = useStore();
+  usePathFinder(features, markers);
   const newRoadFeatures = createLineFeature(newRoadCoordinates);
   const selectedRoad = useGetValueFromSearchParams("selected_road");
   const addMode = useGetValueFromSearchParams("add_road");
