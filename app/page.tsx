@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 const Map = lazy(() => import("@/Map/Map"));
+import type { RoadType } from "@/RoadType";
 import Sidebar from "@/Sidebar/Sidebar";
 import { combineMultipleRiversIntoOne } from "@/combineMultipleRiversIntoOne";
 // import fetchRivers from "./api/fetchRivers.GET";
@@ -15,7 +16,7 @@ export default async function Home({}: // searchParams,
     slugs: "",
     coordinates: [[]],
   };
-  const roads = [];
+  const roads: RoadType[] = [];
 
   return (
     <Suspense fallback={<h1>Loading</h1>}>
