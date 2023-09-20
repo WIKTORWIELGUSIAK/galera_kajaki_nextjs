@@ -2,9 +2,8 @@ import { Suspense, lazy } from "react";
 const Map = lazy(() => import("@/Map/Map"));
 import Sidebar from "@/Sidebar/Sidebar";
 import { combineMultipleRiversIntoOne } from "@/combineMultipleRiversIntoOne";
-import { prisma } from "@/lib/prisma";
-// import fetchRivers from "./api/fetchRivers.GET";
-// import fetchRoads from "./api/fetchRoads.GET";
+import { getRivers } from "./api/getRivers";
+import { getRoads } from "./api/getRoads";
 
 export default async function Home({
   searchParams,
@@ -14,28 +13,9 @@ export default async function Home({
 }) {
   const selectedRivers = searchParams?.selected_rivers;
   const selectedRiversArr = selectedRivers?.split(",");
-  const riversData = await prisma.riversV2.findMany({
-    where: {
-      OR: selectedRiversArr?.map((slug) => ({
-        slug: {
-          contains: slug,
-        },
-      })),
-    },
-    select: {
-      id: true,
-      name: true,
-      coordinates: true,
-      properties: true,
-    },
-  });
-  // const rivers = await fetchRivers(searchParams);
-  const result = {
-    names: selectedRiversArr,
-    slugs: searchParams?.selected_rivers,
-    coordinates: riversData.map((river) => JSON.parse(river.coordinates)),
-  };
-  // const roads = await fetchRoads();
+
+  const rivers = await getRivers(selectedRiversArr);
+  const roads = await getRoads();
 
   return (
     <Suspense fallback={<h1>Loading</h1>}>
@@ -46,10 +26,10 @@ export default async function Home({
           longitude: 19.944544,
           zoom: 10,
         }}
-        sourceData={[]}
-        features={combineMultipleRiversIntoOne(result.coordinates)}
+        sourceData={roads}
+        features={combineMultipleRiversIntoOne(rivers.coordinates)}
       />
-      <Sidebar roads={[]} />
+      <Sidebar roads={roads} />
     </Suspense>
   );
 }
